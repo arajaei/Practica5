@@ -32,3 +32,4 @@ array resultado al cliente.
 
 4. Utilizar el método *currentTimeMillis()* de la clase System para establecer un
    cronómetro en el cliente del ejercicio anterior ¿Cuánto tiempo consume la implementación?
+currentTimeMillis()
