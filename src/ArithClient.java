@@ -2,10 +2,14 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.lang.*;
+import java.io.*;
+import java.util.*;
 
 public class ArithClient {
   public static void main(String[] args) throws Exception {
 
+    Socket theSocket=null;
     int Port=8187;
     String hostname = "localhost";
     if(args.length ==2)
@@ -19,53 +23,62 @@ public class ArithClient {
           System.out.println("You must enter 2 or enter without arguments !!!!!");
         }
    //--------------------------------------------------------- 
-    Socket theSocket = new Socket(hostname, Port);
-    
+    try{
+   
+    theSocket = new Socket(hostname, Port);
     System.out.println("Connected to echo server");  
-    
-      int z1[] = new int[10]={1,2,3,4,5,6,7,8,9,10};
-      int z2[] = new int[10]={1,2,3,4,5,6,7,8,9,10};
-      int result[] = new int[10]={0,0,0,0,0,0,0,0,0,0};
+    } catch (Exception e) {
+	     
+          System.out.println("Can't connect to server");
+      }
+  
+      int z1[]={10,10,10,10,10,10,10,10,10,10};
+      int z2[]={20,20,20,20,20,20,20,20,20,20};
+      
+     try {
+       
+     
       DataObj x = new DataObj();
       DataObj y = new DataObj();
       DataObj w = new DataObj();
+
       x.set(z1);
       y.set(z2);
-    	ObjectOutput is = new ObjectOutputStream(new FileOutputStream("datos.out"));
+
+      long start;
+      long end;
+//------------------- primer objecto ----------------------  
+    	ObjectOutput is = new ObjectOutputStream(new FileOutputStream("datos.in"));
 	    is.writeObject(x);
-      is.flush();
+	    is.flush();
       is.close();
 //-------------------- segundo DataObj-----------------------
 
-	OutputStream o2 = new FileOutputStream("datos.out");
+	OutputStream o2 = new FileOutputStream("datos.in");
 	ObjectOutput s2 = new ObjectOutputStream(o2);
 	s2.writeObject(y);
   s2.flush();
   s2.close();
 
+  start=System.currentTimeMillis();
 //------------------Esperara a resultado-----------------------
 
-        InputStream o = new FileInputStream("datos.in");
+        InputStream o = new FileInputStream("datos.out");
         ObjectInput s1 = new ObjectInputStream(o);
         w = (DataObj) s1.readObject();
+  
+  end= System.currentTimeMillis();
+  
         s1.close();
         w.show();
-        System.out.println("");
-
-    while (true) {
-      String theLine = userIn.readLine();
-      if (theLine.equals("."))
-        break;
-      out.println(theLine);
-      out.flush();
-      System.out.println(networkIn.readLine());
-    }
-
-
-    //BufferedReader userIn = new BufferedReader(new InputStreamReader(System.in));
-   // PrintWriter out = new PrintWriter(theSocket.getOutputStream());
- 
-    networkIn.close();
-    out.close();
-  }
-}
+        
+        System.out.println("Cronometro :"+( end-start));
+       theSocket.close();
+     }//try
+ catch(Exception e) {
+         e.printStackTrace();
+        System.out.println(e.getMessage());
+     }
+       
+     }//main
+}//class

@@ -31,5 +31,6 @@ array resultado al cliente.
    Cuando recibe el resultado lo muestra por la pantalla.  
 
 4. Utilizar el método *currentTimeMillis()* de la clase System para establecer un
-   cronómetro en el cliente del ejercicio anterior ¿Cuánto tiempo consume la implementación?
-currentTimeMillis()
+   cronómetro en el cliente del ejercicio anterior ¿Cuánto tiempo consume la implementación? 
+----------------------------------------
+Normalmente el proceso tarda 3 mili segundos y a veces 2 mili segundos

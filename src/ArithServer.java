@@ -4,6 +4,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.io.*;
+import java.util.*;
 
 public class ArithServer {
 
@@ -40,21 +42,59 @@ public class ArithServer {
             System.err.println("Accept failed.");
             System.exit(1);
         }
+//---------------------------------------------------------
+      
+      
+      DataObj x = null;
+      DataObj y = null;
+      int z1[] = new int[10];
+      int z2[] = new int[10];
+      int result[] = new int[10];
+	   
+      try {
 
-        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        InputStream o = new FileInputStream("datos.in");
+        ObjectInput s1 = new ObjectInputStream(o);
+        x = (DataObj) s1.readObject();
+        s1.close();
+        System.out.println("\n first object X");
+        x.show();
+       
 
-        System.out.println("Echo server started");
+        o = new FileInputStream("datos.in");
+        s1 = new ObjectInputStream(o);
+        y = (DataObj) s1.readObject();
+        s1.close();
+        System.out.println("\n Secound object  Y");
+        y.show();
+       
 
-        String inputLine;
-        while ((inputLine = in.readLine()) != null) {
-            System.out.println("echoing: " + inputLine);
-            out.println(inputLine);
-                      
-            
-        }
-        out.close();
-        in.close();
+	z1 = x.get();
+	z2 = y.get();
+
+        /* Suma de los arrays */
+	for(int p=0; p<z1.length; p++) {
+	   result[p] = z1[p] + z2[p];
+	}
+
+	OutputStream o2 = new FileOutputStream("datos.out");
+	ObjectOutput s2 = new ObjectOutputStream(o2);
+      
+	DataObj myM = new DataObj();
+        myM.set(result);
+	s2.writeObject(myM);
+        System.out.println("\n Resoults :");
+        myM.show();
+        System.out.println("");
+        s2.flush();
+        s2.close();
+
+      } catch (Exception e) {
+	  e.printStackTrace();
+          System.out.println(e.getMessage());
+      }
+      
+      
         clientSocket.close();
         serverSocket.close();
     }
