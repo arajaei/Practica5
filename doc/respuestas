@@ -23,14 +23,21 @@ array resultado al cliente.
    El servidor será un servidor simple que espera por una conección. 
    Cuando la conexión se establezca, leerá los objetos que le envía el cliente. 
    Realizará la suma y devolverá el objeto resultado.
+-----------------------------------------
+Esta realizado en el fichero ArithServer.java
 
+
+**********************************************************************************************************************************
 3. Implementar el cliente ( *ArithClient*)
 
    El cliente será un cliente simple. 
    Ha de definir dos objetos arrays con los que realizará su solicitud al servidor. 
    Cuando recibe el resultado lo muestra por la pantalla.  
+------------------------------------------
+Esta realizado en el fichero ArithClient.java
 
+**********************************************************************************************************************************
 4. Utilizar el método *currentTimeMillis()* de la clase System para establecer un
    cronómetro en el cliente del ejercicio anterior ¿Cuánto tiempo consume la implementación? 
 ----------------------------------------
-Normalmente el proceso tarda 3 mili segundos y a veces 2 mili segundos
+El proceso tarda 94 mili segundos.(Proceso de mandar los dos objetos y esperar a la respuesta hasta que llege objeto desde servidor)

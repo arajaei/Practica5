@@ -32,8 +32,8 @@ public class ArithClient {
           System.out.println("Can't connect to server");
       }
   
-      int z1[]={10,10,10,10,10,10,10,10,10,10};
-      int z2[]={20,20,20,20,20,20,20,20,20,20};
+      int z1[]={1,1,1,1,1,1,1,1,1,1};
+      int z2[]={2,2,2,2,2,2,2,2,2,2};
       
      try {
        
@@ -44,36 +44,40 @@ public class ArithClient {
 
       x.set(z1);
       y.set(z2);
-
+      System.out.println(" ");
+      x.show();
+      System.out.println(" ");
+      y.show();
       long start;
       long end;
+
+       start=System.currentTimeMillis();
 //------------------- primer objecto ----------------------  
-    	ObjectOutput is = new ObjectOutputStream(new FileOutputStream("datos.in"));
+    	ObjectOutput is = new ObjectOutputStream(theSocket.getOutputStream());
 	    is.writeObject(x);
 	    is.flush();
-      is.close();
+        
 //-------------------- segundo DataObj-----------------------
 
-	OutputStream o2 = new FileOutputStream("datos.in");
-	ObjectOutput s2 = new ObjectOutputStream(o2);
-	s2.writeObject(y);
-  s2.flush();
-  s2.close();
+	    is.writeObject(y);
+        is.flush();
 
-  start=System.currentTimeMillis();
-//------------------Esperara a resultado-----------------------
+//------------Esperara a resultado-----------------------
 
-        InputStream o = new FileInputStream("datos.out");
-        ObjectInput s1 = new ObjectInputStream(o);
+        ObjectInput s1 = new ObjectInputStream(theSocket.getInputStream());
         w = (DataObj) s1.readObject();
   
   end= System.currentTimeMillis();
   
-        s1.close();
+        System.out.println(" ");
         w.show();
         
-        System.out.println("Cronometro :"+( end-start));
-       theSocket.close();
+        System.out.println("\n Cronometro :"+( end-start));
+
+        s1.close();
+        is.close();
+        theSocket.close();
+
      }//try
  catch(Exception e) {
          e.printStackTrace();

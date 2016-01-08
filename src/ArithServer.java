@@ -11,7 +11,7 @@ public class ArithServer {
 
    
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException{
        
         int PORT = 8187;
         
@@ -45,56 +45,59 @@ public class ArithServer {
 //---------------------------------------------------------
       
       
-      DataObj x = null;
-      DataObj y = null;
+      DataObj x =new DataObj();
+      DataObj y =new DataObj();
       int z1[] = new int[10];
       int z2[] = new int[10];
       int result[] = new int[10];
 	   
       try {
 
-        InputStream o = new FileInputStream("datos.in");
-        ObjectInput s1 = new ObjectInputStream(o);
+        
+        ObjectInput s1 = new ObjectInputStream(clientSocket.getInputStream());
         x = (DataObj) s1.readObject();
-        s1.close();
+    
+        
+    
         System.out.println("\n first object X");
         x.show();
        
 
-        o = new FileInputStream("datos.in");
-        s1 = new ObjectInputStream(o);
+       
         y = (DataObj) s1.readObject();
-        s1.close();
+    
+        
         System.out.println("\n Secound object  Y");
         y.show();
-       
+        
 
 	z1 = x.get();
 	z2 = y.get();
-
+//----------------------------------------------------------------------------
         /* Suma de los arrays */
 	for(int p=0; p<z1.length; p++) {
 	   result[p] = z1[p] + z2[p];
 	}
-
-	OutputStream o2 = new FileOutputStream("datos.out");
-	ObjectOutput s2 = new ObjectOutputStream(o2);
-      
-	DataObj myM = new DataObj();
+//----------------------------------------------------------------------------
+	
+        ObjectOutput is = new ObjectOutputStream(clientSocket.getOutputStream());  
+	    DataObj myM = new DataObj();
         myM.set(result);
-	s2.writeObject(myM);
+	    is.writeObject(myM);
+        is.flush();
+
         System.out.println("\n Resoults :");
         myM.show();
         System.out.println("");
-        s2.flush();
-        s2.close();
 
+        is.close();
+        s1.close();
+    
       } catch (Exception e) {
 	  e.printStackTrace();
           System.out.println(e.getMessage());
       }
-      
-      
+
         clientSocket.close();
         serverSocket.close();
     }
